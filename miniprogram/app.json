@@ -1,6 +1,10 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/news/index/index",
+    "pages/basic/index",
+    "pages/write/index",
+    "pages/source/index",
+    "pages/user/index",
     "pages/wxml/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",
@@ -15,5 +19,43 @@
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "云开发 QuickStart",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#696969",
+    "selectedColor": "#EF4238",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "text": "news",
+        "pagePath": "pages/news/index/index",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "text": "basic",
+        "pagePath": "pages/basic/index",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "text": "write",
+        "pagePath": "pages/write/index",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "text": "source",
+        "pagePath": "pages/source/index",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "text": "my",
+        "pagePath": "pages/user/index",
+        "iconPath": "",
+        "selectedIconPath": ""
+      }
+    ]
   }
 }

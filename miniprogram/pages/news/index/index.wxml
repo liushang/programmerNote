@@ -1,0 +1,44 @@
+<!--new.wxml-->
+<view class="container">
+
+    <swiper class="banner"
+      indicator-dots="{{swiperOptions.indicatorDots}}"
+      indicator-color="rgba(255, 255, 255, .6)"
+      indicator-active-color="#fff"
+      circular="{{swiperOptions.circular}}"
+      autoplay="{{swiperOptions.autoplay}}"
+      interval="{{swiperOptions.interval}}"
+      duration="{{swiperOptions.duration}}"
+      bindchange="onBannerChagne">
+      <block wx:for="{{banners}}" wx:key="{{item.link}}">
+        <swiper-item catchtap="clickDotAndJump" data-web-view="{{item}}" data-bid="b_z84owham" data-view="b_ndj7d48v" data-index="{{index}}">
+          <image src="{{item.thumb}}" />
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <view class="add-banner" bindtap="showAddBanner"></view>
+    <view class="add-banner-layer" wx:if="{{addBanner}}" catchtap="shutAddBanner">
+        <view class="add-banner-modal" catchtap="preventShut">
+            <view class="image-default" bindtap="upLoadImage">
+                <image src="{{upLoadImg}}" class="banner-image" wx:if="{{upLoadImg}}"/>
+            </view> 
+            <view class="desc-default">
+                <span class="">
+                    跳转链接：
+                    <input placeholder="请输入..." />
+                </span>
+            </view> 
+            <view class="desc-default">
+                <span class="">
+                    关键字：
+                    <input placeholder="keyword..." />
+                </span>
+            </view>
+            <view type="text" class="save-banner" bindtap="saveBanner">
+                save
+            </view>
+        </view>
+    </view>
+
+</view>
