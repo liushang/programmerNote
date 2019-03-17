@@ -1,6 +1,7 @@
 //index.js
+import { urlPre } from '../../../js/env.js'
 const app = getApp()
-
+console.log(urlPre)
 Page({
   data: {
     swiperOptions: {
@@ -10,21 +11,15 @@ Page({
       interval: 5000,
       duration: 500,
     },
-    banners: [{
-      thumb: 'http://p1.meituan.net/movie/a10357392d99ffa5a01b11ddd893f1d384328.jpg',
-      link: '',
-      keyWord: '11111'
-    }, {
-      thumb: 'http://p1.meituan.net/movie/2d5677663a7cf2167e473a6a269dac7b91163.jpg',
-      link: '',
-      keyWord: '22222'
-    }, {
-      thumb: 'http://p0.meituan.net/movie/0fd9d06392d1b275705c7300317e924675865.jpg',
-      link: '',
-      keyWord: '33333'
-    }],
-    addBanner: true,
+    banners: null,
+    bannerObj: {
+      fileID: '',
+      bannerLink: '',
+      keyWord: ''
+    },
+    addBanner: false,
     upLoadImg: '',
+    fileID: '',
   },
 
   onLoad: function() {
@@ -51,6 +46,8 @@ Page({
         }
       }
     })
+    console.log('获取bannerInfo')
+    this.getBannerInfo()
   },
   onBannerChagne () {
     console.log('banner滑动')
@@ -65,6 +62,16 @@ Page({
     
     this.setData({
       addBanner: false
+    })
+  },
+  getBannerInfo () {
+    let self = this
+    app.request().get(`${urlPre}/api/code/news/getBannerInfo`)
+    .end().then( ( { body: data } ) => {
+      console.log(data)
+      self.setData({
+        banners: data.data
+      })
     })
   },
   upLoadImage () {
@@ -83,18 +90,20 @@ Page({
 
         const filePath = res.tempFilePaths[0]
         // 上传图片
-        const cloudPath = 'news-banner' + filePath.match(/\.[^.]+?$/)[0]
+        const cloudPath = `code/news/index/news-banner/${(new Date().getTime())}${filePath.match(/\.[^.]+?$/)[0]}`
         wx.cloud.uploadFile({
           cloudPath,
           filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
+          success: ({ fileID }) => {
+            console.log('[上传文件] 成功：')
+            // app.globalData.fileID = fileID
+            // app.globalData.cloudPath = cloudPath
+            // app.globalData.imagePath = filePath
             self.setData({
               upLoadImg: filePath,
+              ['bannerObj.fileID']: fileID
             })
+
           },
           fail: e => {
             console.error('[上传文件] 失败：', e)
@@ -107,11 +116,44 @@ Page({
             wx.hideLoading()
           }
         })
-
       },
       fail: e => {
         console.error(e)
       }
+    })
+  },
+  bindKeyInput (e) {
+    this.setData({
+      ['bannerObj.keyWord']: e.detail.value
+    })
+  },
+  bindlinkInput (e) {
+    this.setData({
+      ['bannerObj.bannerLink']: e.detail.value
+    })
+  },
+  saveBanner () {
+    let { bannerObj } = this.data
+    console.log(bannerObj)
+    // 请求后端 图片直接存储到云 接口做图片与关键字的关联
+    // wx.request({
+    //   url: `${urlPre}/api/code/common/upLoadImg`,
+    //   method: 'POST',
+    //   data: JSON.stringify({
+    //     bannerObj
+    //   }),
+    //   success(res) {
+    //     console.log(res)
+    //   }
+    // })
+    console.log(app)
+    app.request().post(`${urlPre}/api/code/news/addBannerInfo`).send(bannerObj)
+    .end().then( ( { body: data } ) => {
+      console.log(data)
+      this.setData({
+        banners: data.data,
+        addBanner: false
+      })
     })
   },
   preventShut () {

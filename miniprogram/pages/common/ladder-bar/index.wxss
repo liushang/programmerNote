@@ -1,0 +1,24 @@
+.extend{
+    height: 70rpx;
+    padding: 0 20rpx;
+    border: 1rpx solid red;
+    overflow: hidden;
+}
+
+.choose-item{
+    display: inline-block;
+    font-size: 30rpx;
+    line-height: 70rpx;
+    position: relative;
+    margin-right: 50rpx;
+}
+.choose-item::after{
+    background: url('https://static.meituan.net/bs/MYFE/wxapp-wallet/file/images/arrow-right.png');
+    content: '';
+    width: 20rpx;
+    background-size: 100% 100%;
+    height: 20rpx;
+    position: absolute;
+    right: -34rpx;
+    top: 28rpx;
+}

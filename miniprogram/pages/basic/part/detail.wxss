@@ -1,0 +1,96 @@
+
+@import "../../../wxParse/wxParse.wxss";
+page {
+    background: white;
+    height: 100%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: flex-start; */
+}
+.detail-title{
+    text-align: right;
+    padding: 26rpx 46rpx 0;
+    position: fixed;
+    opacity: 0.4;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 40rpx;
+}
+.detail-content {
+    font-size: 28rpx;
+    padding: 0 40rpx;
+}
+.modal-layer{
+    height: 100%;
+    /* background-color: rgba(0,0,0, 0.4) */
+}
+.edit-modal{
+    width: 90%;
+    height: 80%;
+    background-color: white;
+}
+.first-item, .sec-item{
+    position: relative;
+}
+.first-item-del, .sec-item-del{
+    display: inline-block;
+    position: absolute;
+    top: 4rpx;
+    right: 10rpx;
+}
+.first-item-add,.sec-item-add{
+    background: brown;
+    text-align: center;
+}
+.edit-modal input{
+    display: inline-block;
+}
+.part{
+    height: 100%;
+}
+.name{
+    position: relative;
+}
+.name-item{
+    display: inline-block;
+    border: 1rpx solid #cecdcd;
+    border-radius: 3rpx;
+    margin: 0 8rpx;
+    height: 30rpx;
+    padding: 2rpx 6rpx;
+    font-size: 20rpx
+}
+.second-item{
+    /* display: inline-block;
+    vertical-align: top; */
+    margin-left: 40rpx;
+}
+.choosed-tag{
+    border: 1rpx solid red
+}
+.style-input{
+    width: 100rpx;
+    display: inline-block;
+    border: 1rpx solid red;
+    border-radius: 4rpx;
+    font-size: 24rpx;
+    min-height: 30rpx;
+    line-height: 30rpx;
+    vertical-align: middle;
+    position: absolute;
+    top: 12rpx;
+    right: 42rpx;
+    height: 36rpx;
+}
+/* .add-node{
+    width: 40rpx;
+    display: inline-block;
+} */
+.rich-text-img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.img-input{
+    vertical-align: top;
+}

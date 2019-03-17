@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/news/index/index",
-    "pages/basic/index",
+    "pages/basic/index/index",
+    "pages/basic/part/detail",
     "pages/write/index",
     "pages/source/index",
     "pages/user/index",
@@ -34,7 +35,7 @@
       },
       {
         "text": "basic",
-        "pagePath": "pages/basic/index",
+        "pagePath": "pages/basic/index/index",
         "iconPath": "",
         "selectedIconPath": ""
       },

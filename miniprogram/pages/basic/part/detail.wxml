@@ -1,0 +1,122 @@
+<import src="../../../wxParse/wxParse.wxml"/>  
+<view class="part">
+  <!-- <ladder-bar discipline="{{discipline}}" profession="{{profession}}" skill="{{skill}}" part="{{part}}"></ladder-bar> -->
+  <view class="detail-title" bindtap="edit" wx:if="{{!showEditModal}}">
+    编辑
+  </view>
+  <view class="detail-title" wx:else>
+    <span bindtap="canncel">取消</span>
+    <span bindtap="confimEdit">确定</span>
+  </view>
+  <wxs module="m1">
+    var getStyle = function(str) { 
+      return str.split(';')
+    }; 
+    var getKey = function(str) { 
+      return str.split(':')[0]
+    };
+    var getVal = function(str) { 
+      return str.split(':')[1]
+    };
+    var getMapKey = function(map, key) { 
+      return map[key]
+    };
+    module.exports = {
+      getStyle: getStyle,
+      getKey: getKey,
+      getVal: getVal,
+      getMapKey: getMapKey,
+    };
+  </wxs>
+  <view class="detail-content" wx:if="{{!showEditModal}}">
+    <!-- <template is="wxParse" data="{{wxParseData:makeDown.nodes}}" /> -->
+    <rich-text nodes="{{detail}}" bindtap="tap"></rich-text>
+  </view>
+  <view class="modal-layer" wx:else>
+    <view class="edit-modal" >
+      <view wx:for="{{detail}}" class="first-item" bindtap="catchFirst" data-index="{{index}}" wx:for-index="index" wx:for-item="i" wx:key="index">
+        <!-- node节点 name属性 -->
+        <view class="name" wx:if="{{chooseFirst===index}}">
+          <span class="name-item" wx:for="{{nodeArr}}" wx:for-index="yndex" wx:for-item="y" wx:key="yndex">
+            <span bindtap="getNode" data-name="{{y.name}}" class="{{y.name===i.name||i[y.name]!==undefined?'choosed-tag':''}}" data-index="{{index}}">
+              {{y.name}}
+            </span>
+          </span>
+          <span class="name-item style-item" wx:for="{{m1.getStyle(i.attrs.style)}}" wx:for-index="zndex" wx:for-item="z" wx:key="zndex">
+            <span bindtap="chooseStyle" wx:if="{{!z.choose}}" data-val="{{m1.getVal(z)}}" data-name="{{m1.getKey(z)}}" class="{{m1.getKey(z)===i.styleKey?'choosed-tag':''}}" data-index="{{index}}">
+              {{styleMap[m1.getKey(z)].sName}}
+            </span>
+          </span>
+          <input placeholder="{{i.styleInput}}" class="style-input" data-key="{{i.styleKey}}" bindinput="inputStyle" data-index="{{index}}" data-name="" />
+        </view>
+        <!-- img节点src属性 -->
+        <view wx:if="{{i.attrs.src!==undefined}}">
+          src:<input placeholder="....." bindinput="inputText" class="img-input" focus="true" data-index="{{index}}" bindconfirm="huiche" />
+        </view>
+        <!-- 节点style属性 -->
+        <!-- <view>
+          <span>style:</span>
+        </view> -->
+        <!-- text节点input属性 -->
+        <view wx:if="{{i.type!==undefined}}">
+          <input placeholder="" bindinput="inputText" focus="true" data-index="{{index}}" bindconfirm="huiche"/>
+        </view>
+        <!-- 节点拓展属性 -->
+        <!-- <view wx:if="{{i.expandd!==undefined}}" class="add-node" data-index="{{index}}" bindtap="addChildren" >
+          +
+        </view> -->
+        <!-- node节点拓展属性 -->
+        <view wx:if="{{i.children!==undefined && i.children.length>0}}" class="second-item">
+          <view wx:for="{{i.children}}" class="sec-item" bindtap="catchSec" data-index="{{index+ '-' + iindex}}" wx:for-index="iindex" wx:for-item="ii" wx:key="iindex">
+            <!-- 二级属性 -->
+            <!-- node节点 name属性 -->
+            <view class="name" wx:if="{{chooseSec===iindex && chooseFirst === index}}">
+              <span class="name-item" wx:for="{{nodeArr}}" wx:for-index="yyndex" wx:if="{{yy.name!=='div'}}" wx:for-item="yy" wx:key="yyndex">
+                <span bindtap="getNode" data-name="{{yy.name}}" class="{{yy.name===ii.name||ii[yy.name]!==undefined?'choosed-tag':''}}" data-index="{{index + '-' + iindex}}">
+                  {{yy.name}}
+                </span>
+              </span>
+              <span class="name-item style-item" wx:for="{{m1.getStyle(ii.attrs.style)}}" wx:for-index="zzndex" wx:for-item="zz" wx:key="zzndex">
+                <span bindtap="chooseStyle" data-val="{{m1.getVal(zz)}}" data-name="{{m1.getKey(zz)}}" class="{{m1.getKey(zz)===ii.styleKey?'choosed-tag':''}}" data-index="{{index + '-' + iindex}}">
+                  {{styleMap[m1.getKey(zz)].sName}}
+                </span>
+              </span>
+              <input placeholder="{{ii.styleInput}}" class="style-input" data-key="{{ii.styleKey}}" bindinput="inputStyle" data-index="{{index + '-' + iindex}}" data-name="" />
+            </view>
+            <!-- img节点src属性 -->
+            <view wx:if="{{ii.attrs.src!==undefined}}">
+              src:<input placeholder="....." bindinput="inputText" class="img-input" focus="true" data-index="{{index + '-' + iindex}}" bindconfirm="huiche" />
+            </view>
+            <!-- 节点style属性 -->
+            <!-- <view>
+              <span>style:</span>
+            </view> -->
+            <!-- text节点input属性 -->
+            <view wx:if="{{ii.type!==undefined}}">
+              <input value="{{ii.text}}" placeholder="..." bindinput="inputText" focus="true" data-index="{{(index)+'-'+(iindex)}}" bindconfirm="huiche"/>
+            </view>
+            <!-- node节点拓展属性 -->
+            <view wx:if="{{ii.children!==undefined}}">
+              <block wx:for="{{ii.children}}" wx:for-index="iiindex" wx:for-item="iii" wx:key="iiindex">
+              </block>
+            </view>
+            <view bindtap="addNode" class="sec-item-del" data-type="del" data-index="{{index + '-' +iindex}}">
+              - 
+            </view>
+          </view>
+          <!-- <view bindtap="addNode" data-type="add" class="sec-item-add" data-index="{{index + '-' +i.children.length}}">
+            + 
+          </view> -->
+        </view>
+        <view bindtap="addNode" class="first-item-del" data-type="del" data-index="{{index}}">
+          - 
+        </view>
+      </view>
+      <view bindtap="addNode" data-type="add" class="first-item-add" data-index="{{detail.length}}">
+        + 
+      </view>
+      <rich-text nodes="{{detail}}" bindtap="tap"></rich-text>
+    </view>
+  </view>
+<!-- {{makeDown}} -->
+</view>

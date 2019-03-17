@@ -12,7 +12,7 @@
       bindchange="onBannerChagne">
       <block wx:for="{{banners}}" wx:key="{{item.link}}">
         <swiper-item catchtap="clickDotAndJump" data-web-view="{{item}}" data-bid="b_z84owham" data-view="b_ndj7d48v" data-index="{{index}}">
-          <image src="{{item.thumb}}" />
+          <image src="{{item.fileID}}" />
         </swiper-item>
       </block>
     </swiper>
@@ -26,13 +26,13 @@
             <view class="desc-default">
                 <span class="">
                     跳转链接：
-                    <input placeholder="请输入..." />
+                    <input placeholder="请输入..." bindinput="bindLinkInput"/>
                 </span>
             </view> 
             <view class="desc-default">
                 <span class="">
                     关键字：
-                    <input placeholder="keyword..." />
+                    <input placeholder="keyword..." bindinput="bindKeyInput"/>
                 </span>
             </view>
             <view type="text" class="save-banner" bindtap="saveBanner">

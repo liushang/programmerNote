@@ -2,11 +2,13 @@
 	"miniprogramRoot": "miniprogram/",
 	"cloudfunctionRoot": "cloudfunctions/",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false,
+		"nodeModules": true
 	},
 	"appid": "wx692550b433510dc0",
 	"projectname": "%E6%BA%90%E7%A0%81%E6%89%8B%E6%9C%AD",
@@ -28,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -40,6 +42,21 @@
 					"id": -1,
 					"name": "wxml",
 					"pathName": "pages/wxml/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "basic",
+					"pathName": "pages/basic/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "basicpart",
+					"pathName": "pages/basic/part/detail",
+					"query": "title=fixed定位下弹起键盘无法复位问题&skill=js",
 					"scene": null
 				}
 			]

@@ -1,4 +1,5 @@
 //app.js
+import request from './js/request'
 App({
   onLaunch: function () {
     
@@ -9,5 +10,6 @@ App({
     }
 
     this.globalData = {}
-  }
+  },
+  request
 })

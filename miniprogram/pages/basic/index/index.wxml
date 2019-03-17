@@ -1,0 +1,33 @@
+<!--index.wxml-->
+<view>
+  <ladder-bar bind:back="back" discipline="{{discipline}}" profession="{{profession}}" skill="{{skill}}" part="{{part}}"></ladder-bar>
+  <view class="content">
+    <view wx:for="{{discipline}}" class="module" wx:if="{{choosed==='discipline'}}">
+      <view class="module-item" bindtap="getProfession" data-discipline="{{item.sName}}">{{item.name}}</view>
+    </view>
+    <view wx:for="{{profession}}" class="module" wx:if="{{choosed==='profession'}}">
+      <view class="module-item" bindtap="getSkill" data-profession="{{item.sName}}">{{item.name}}</view>
+    </view>
+    <view wx:for="{{skill}}" class="module" wx:if="{{choosed==='skill'}}">
+      <view class="module-item" bindtap="getPart" data-skill="{{item.sName}}">{{item.name}}</view>
+    </view>
+    <view wx:for="{{part}}" class="module-part" wx:if="{{choosed==='part'}}">
+      <view class="module-item" bindtap="getPartDetail" data-title="{{item.title}}" data-skill="{{item.skill}}">{{item.title}}</view>
+    </view>
+  </view>
+  <view class="add-input" wx:if="{{showInput}}">
+    <input placeholder="又编写了一个问题..." bindinput="partTitle" />
+  </view>
+  <view class="add" wx:if="{{!showInput}}" bindtap="addPart">
+  </view>
+  <view class="add-bottom" wx:if="{{showInput}}" bindtap="addPart">
+    <view class="cancel" bindtap="showInput=false">
+      取消
+    </view>
+    <view class="confirm" bindtap="makePart">
+      确定
+    </view>
+  </view>
+  <view class="detail">
+  </view>
+</view>

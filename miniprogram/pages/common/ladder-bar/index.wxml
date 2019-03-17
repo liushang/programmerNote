@@ -1,0 +1,17 @@
+  <view class="extend">
+    <view class="choose-item choose-discipline" bindtap="back" data-type="">
+      all
+    </view>
+    <view class="choose-item choose-discipline" wx:if="{{disciplineName}}" bindtap="back" data-type="discipline">
+      {{disciplineName}}
+    </view>
+    <view class="choose-item choose-profession" wx:if="{{professionName}}" bindtap="back" data-type="profession">
+      {{professionName}}
+    </view>
+    <view class="choose-item choose-skill" wx:if="{{skillName}}" bindtap="back" data-type="skill">
+      {{skillName}}
+    </view>
+    <view class="choose-item choose-part" wx:if="{{partName}}" bindtap="back" data-type="part">
+      {{partName}}
+    </view>
+  </view>
