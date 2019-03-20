@@ -5,13 +5,22 @@ const app = getApp()
 const nodeArr = [
   {
     name: 'text',
+    expand: false,
   }, { 
     name: 'div',
     expand: true,
     choose: false,
   }, { 
+    name: 'p',
+    expand: true,
+    choose: false,
+  }, { 
     name: 'img',
     expand: false,
+    choose: false,
+  }, { 
+    name: 'code',
+    expand: true,
     choose: false,
   // }, { 
   //   name: 'h',
@@ -56,9 +65,9 @@ const styleMap = {
 const styleArr = [
   {
     name: 'font-size',
-    value: '16rpx',
+    value: '16px',
     sName: 'f-s',
-    unit: 'rpx',
+    unit: 'px',
     choose: false
   },
   {
@@ -84,7 +93,7 @@ const styleArr = [
   },
   {
     name: 'line-height',
-    value: '0rpx',
+    value: '0px',
     sName: 'l-h',
     unit: 'px',
     choose: false
@@ -103,7 +112,7 @@ const funcMap = {
     text: '',
     attrs: {
       class: '',
-      style: 'font-size: 20rpx;line-height: 20rpx;color:black;font-weight:500'
+      style: 'font-size: 20px;line-height: 20px;color:black;font-weight:500'
     },
     styleInput: '',
     styleKey:'',
@@ -112,7 +121,7 @@ const funcMap = {
     name: 'img',
     attrs: {
       class: 'rich-text-img',
-      style: 'margin:0 10rpx;width: 200rpx;height: 200rpx',
+      style: 'margin:0 auto;width: 300px;height: 200rpx',
       src: '',
     },
     styleInput: '',
@@ -122,8 +131,8 @@ const funcMap = {
     name: 'div',
     expandd: true,
     attrs: {
-      class: '',
-      style: 'font-size: 20rpx;line-height: 20rpx;color:black'
+      class: 'rich-text-div',
+      style: 'font-size: 20px;line-height: 20px;color:black'
     },
     styleInput: '',
     styleKey:'',
@@ -132,7 +141,48 @@ const funcMap = {
       text: '',
       attrs: {
         class: '',
-        style: 'font-size: 20rpx;line-height: 20rpx;color:black'
+        style: 'font-size: 20px;line-height: 20px;color:black'
+      },
+      styleInput: '',
+      styleKey:'',
+    }]
+  },
+  p: {
+    name: 'p',
+    expandd: true,
+    attrs: {
+      class: 'rich-text-p',
+      style: 'font-size: 20px;line-height: 20px;color:black'
+    },
+    styleInput: '',
+    styleKey:'',
+    children: [{
+      type: 'text',
+      text: '',
+      attrs: {
+        class: '',
+        style: 'font-size: 20px;line-height: 20px;color:black'
+      },
+      styleInput: '',
+      styleKey:'',
+    }]
+  },
+  code: {
+    name: 'code',
+    expandd: true,
+    expandArr: [ 'text' ],
+    attrs: {
+      class: 'rich-text-code',
+      style: 'font-size: 14px;line-height: 20px;color:black'
+    },
+    styleInput: '',
+    styleKey:'',
+    children: [{
+      type: 'text',
+      text: '',
+      attrs: {
+        class: '',
+        style: 'font-size: 20px;line-height: 20px;color:black'
       },
       styleInput: '',
       styleKey:'',
@@ -169,7 +219,7 @@ const funcMap = {
 Page({
   data: {
     detail: [],
-    showEditModal: true,
+    showEditModal: false,
     nodeArr,
     funcMap,
     styleArr,
@@ -199,7 +249,7 @@ Page({
         discipline,
         skill,
         part,
-        detail: content,
+        detail: JSON.parse(content),
         partDetail: data[0],
         choosed: 'part'
       })
@@ -207,7 +257,8 @@ Page({
   },
   edit() {
     this.setData({
-      showEditModal: true
+      showEditModal: true,
+      originText: JSON.stringify(this.data.detail)
     })
   },
   inputText({ detail: { value }, target: { dataset: { index } } }) {
@@ -242,7 +293,7 @@ Page({
     if ( name === originName ) {
       originName = ''
     } else {
-      originName = name
+    originName = name
     }
     console.log(funcMap)
     // let setItem
@@ -294,11 +345,54 @@ Page({
       if (type === 'add') {
         if (indexArr[1] > 0) {
           let { type, name } = detail[indexArr[0]].children[indexArr[1] - 1]
-          let typeObj = this.data.funcMap[type || name]
-          let delObj = JSON.parse(JSON.stringify(typeObj))
+          let typeObj
+          let delObj
           // let delObj = JSON.parse(JSON.stringify(detail[indexArr[0]].children[indexArr[1] - 1]))
           // delete delObj.children
-          detail[indexArr[0]].children[indexArr[1]] = Object.assign({}, delObj)
+          // 如果是二级text文本节点 根据第一级计算样式
+          if (type) {
+            name = detail[indexArr[0]].name
+            delObj = JSON.parse(JSON.stringify(this.data.funcMap[name]))
+            detail[+indexArr[0] + 1] = Object.assign({}, delObj)
+            // 针对code标签做缩进处理
+            let codes = detail
+            if (name === 'code') {
+              let tier = 0
+              for (let i = 0; i < codes.length-1; i++ ) {
+
+                if (codes[i].name && codes[i].name === 'code') {
+                  let str = codes[i].children[0].text.split('')
+                  let right = str.filter(x => x === '{').length
+                  let left = str.filter(x => x === '}').length
+                  console.log(right, left)
+                  if ((right - left) % 2 !== 0 ) {
+                    if (right > left) {
+                      tier++
+                      let result = `padding-left:${30 + tier * 20 }px;`
+                      let newVal = codes[i + 1].attrs.style.replace(/padding-left.*?(;|$)/, result)
+                      codes[i + 1].attrs.style = newVal
+                    } else {
+                      tier--
+                      let result = `padding-left:${30 + tier * 20 }px;`
+                      let newVal = codes[i].attrs.style.replace(/padding-left.*?(;|$)/, result)
+                      codes[i].attrs.style = newVal
+                    }
+                  } else {
+                    let result = `padding-left:${30 + tier * 20 }px;`
+                    let newVal = codes[i].attrs.style.replace(/padding-left.*?(;|$)/, result)
+                    codes[i].attrs.style = newVal
+                  }
+                } else {
+                  tier = 0
+                }
+              }
+            }
+          } else {
+            typeObj = this.data.funcMap[name]
+            console.log(typeObj)
+            delObj = JSON.parse(JSON.stringify(typeObj))
+            detail[indexArr[0]].children[indexArr[1]] = Object.assign({}, delObj)
+          }
         } else {
           detail[indexArr[0]].children[indexArr[1]] = {
             type: 'text',
@@ -376,9 +470,6 @@ Page({
   catchFirst({ target: { dataset: { index } } }) {
     console.log(index)
     let firstNum = Number(index.toString().split('-')[0])
-    // if (this.data.detail.length - 1 <= firstNum) {
-    //   firstNum = this.data.detail.length - 1
-    // }
     this.setData({
       chooseFirst: firstNum,
     })
@@ -395,7 +486,32 @@ Page({
     })
   },
   confimEdit() {
+    const { detail: content, title, skill } = this.data
+    console.log(content)
+    app.request().post(`${urlPre}/api/code/basic/part/savePartDetailByTitle`).send({
+      title, skill, content
+    })
+    .end().then( ( { body: { data: data } } ) => {
+      console.log(data)
+      const { discipline, profession, skill, title: part, content } = data[0]
+      // WxParse.wxParse('makeDown', 'md', content, this, 20)
+      this.setData({
+        profession,
+        discipline,
+        skill,
+        part,
+        detail: content,
+        partDetail: data[0],
+        choosed: 'part'
+      })
+    })
     this.setData({
+      showEditModal: false,
+    })
+  },
+  canncel() {
+    this.setData({
+      detail: JSON.parse(this.data.originText),
       showEditModal: false,
     })
   }
