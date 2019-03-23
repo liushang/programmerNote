@@ -56,7 +56,7 @@
 					"id": 3,
 					"name": "basicpart",
 					"pathName": "pages/basic/part/detail",
-					"query": "title=fixed定位下弹起键盘无法复位问题&skill=js",
+					"query": "title=blur和click冲突&skill=js",
 					"scene": null
 				}
 			]

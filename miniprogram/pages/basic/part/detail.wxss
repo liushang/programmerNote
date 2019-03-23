@@ -162,6 +162,10 @@ page {
     background: black;
     border-right: 1px solid black;
 }
+.rich-text-div{
+    /* font-size: 14px; */
+    line-height: 26px;
+}
 .img-input{
     vertical-align: top;
     width: 200rpx;
@@ -179,4 +183,13 @@ page {
     left: 0;
     height: 100%;
     overflow-y: scroll;
+}
+.part-title {
+    margin: 30rpx auto 20rpx;
+    text-align: center;
+}
+.input-test{
+    width: 90%;
+    height: 200rpx;
+    background: coral;
 }

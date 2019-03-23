@@ -34,6 +34,7 @@
     };
   </wxs>
   <view class="detail-content" wx:if="{{!showEditModal}}">
+    <view class="part-title">{{part}}</view>
     <!-- <template is="wxParse" data="{{wxParseData:makeDown.nodes}}" /> -->
     <rich-text nodes="{{detail}}" bindtap="tap"></rich-text>
   </view>
@@ -130,7 +131,10 @@
         </view>
       </view>
       <view class="scroll-bottom">
-        <rich-text nodes="{{detail}}" class="rich-text" bindtap="tap"></rich-text>
+        <view class="rich-text">
+          <view class="part-title">{{part}}</view>
+          <rich-text nodes="{{detail}}" bindtap="tap"></rich-text>
+        </view>
       </view>
     </view>
   </view>

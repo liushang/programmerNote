@@ -33,17 +33,40 @@ Page({
     // 获取用户信息
     wx.getSetting({
       success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
+        console.log(res)
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+              wx.getLocation({
+                success: res => {
+                  console.log(res)
+                }
               })
             }
           })
         }
+        wx.login({
+          success(res) {
+            if (res.code) {
+              // 发起网络请求
+              app.request().post(`${urlPre}/api/code/login`).send({
+                code: res.code
+              })
+              .end().then( ( { body: data } ) => {
+                console.log(data)
+                self.setData({
+                  banners: data.data
+                })
+              })                      } else {
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      },
+      fail(e){
+        console.log('eeeee')
       }
     })
     console.log('获取bannerInfo')

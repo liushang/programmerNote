@@ -60,6 +60,10 @@ const styleMap = {
   'font-weight': {
     sName: 'f-w',
     unit: '',
+  },
+  'text-align': {
+    sName: 't-a',
+    unit: '',
   }
 }
 const styleArr = [
@@ -132,7 +136,7 @@ const funcMap = {
     expandd: true,
     attrs: {
       class: 'rich-text-div',
-      style: 'font-size: 20px;line-height: 20px;color:black'
+      style: 'font-size: 10px;line-height: 20px;color:black;text-align: left'
     },
     styleInput: '',
     styleKey:'',
@@ -141,7 +145,7 @@ const funcMap = {
       text: '',
       attrs: {
         class: '',
-        style: 'font-size: 20px;line-height: 20px;color:black'
+        style: ''
       },
       styleInput: '',
       styleKey:'',
@@ -173,7 +177,7 @@ const funcMap = {
     expandArr: [ 'text' ],
     attrs: {
       class: 'rich-text-code',
-      style: 'font-size: 14px;line-height: 20px;color:black'
+      style: 'font-size: 14px;line-height: 20px;color:black;padding-left: 30px'
     },
     styleInput: '',
     styleKey:'',
@@ -249,7 +253,7 @@ Page({
         discipline,
         skill,
         part,
-        detail: JSON.parse(content),
+        detail: content && JSON.parse(content) || [funcMap['div']],
         partDetail: data[0],
         choosed: 'part'
       })
@@ -351,8 +355,9 @@ Page({
           // delete delObj.children
           // 如果是二级text文本节点 根据第一级计算样式
           if (type) {
-            name = detail[indexArr[0]].name
+            let { name, attrs } = detail[indexArr[0]]
             delObj = JSON.parse(JSON.stringify(this.data.funcMap[name]))
+            delObj.attrs = attrs
             detail[+indexArr[0] + 1] = Object.assign({}, delObj)
             // 针对code标签做缩进处理
             let codes = detail
@@ -368,13 +373,19 @@ Page({
                   if ((right - left) % 2 !== 0 ) {
                     if (right > left) {
                       tier++
+                      console.log(tier)
                       let result = `padding-left:${30 + tier * 20 }px;`
+                      console.log(codes[i].attrs.style)
                       let newVal = codes[i + 1].attrs.style.replace(/padding-left.*?(;|$)/, result)
+                      console.log(newVal)
                       codes[i + 1].attrs.style = newVal
                     } else {
                       tier--
+                      console.log(tier)
                       let result = `padding-left:${30 + tier * 20 }px;`
+                      console.log(codes[i].attrs.style)
                       let newVal = codes[i].attrs.style.replace(/padding-left.*?(;|$)/, result)
+                      console.log(newVal)
                       codes[i].attrs.style = newVal
                     }
                   } else {

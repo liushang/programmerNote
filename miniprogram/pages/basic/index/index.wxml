@@ -2,30 +2,44 @@
 <view>
   <ladder-bar bind:back="back" discipline="{{discipline}}" profession="{{profession}}" skill="{{skill}}" part="{{part}}"></ladder-bar>
   <view class="content">
-    <view wx:for="{{discipline}}" class="module" wx:if="{{choosed==='discipline'}}">
+    <view wx:for="{{discipline}}" class="module" wx:if="{{choosed==='discipline'}}"  wx:for-index="index" wx:key="{{index}}">
       <view class="module-item" bindtap="getProfession" data-discipline="{{item.sName}}">{{item.name}}</view>
     </view>
-    <view wx:for="{{profession}}" class="module" wx:if="{{choosed==='profession'}}">
+    <view wx:for="{{profession}}" class="module" wx:if="{{choosed==='profession'}}" wx:for-index="index" wx:key="{{index}}">
       <view class="module-item" bindtap="getSkill" data-profession="{{item.sName}}">{{item.name}}</view>
     </view>
-    <view wx:for="{{skill}}" class="module" wx:if="{{choosed==='skill'}}">
-      <view class="module-item" bindtap="getPart" data-skill="{{item.sName}}">{{item.name}}</view>
+    <view wx:for="{{skill}}" class="module" wx:if="{{choosed==='skill'}}" wx:for-index="index" wx:key="{{index}}">
+      <view class="module-item" bindtap="getPart" data-skill="{{item.sName}}" data-type="{{item.type}}">{{item.name}}</view>
     </view>
-    <view wx:for="{{part}}" class="module-part" wx:if="{{choosed==='part'}}">
-      <view class="module-item" bindtap="getPartDetail" data-title="{{item.title}}" data-skill="{{item.skill}}">{{item.title}}</view>
+    <view wx:for="{{part}}" class="module-part" wx:if="{{choosed==='part'}}" wx:for-index="index" wx:key="{{index}}">
+      <view class="module-item" bindtap="getPartDetail" data-title="{{item.title}}" data-skill="{{item.skill}}">
+        {{item.title}}
+      </view>
+      <span bindtap="modPart" data-skill="{{skill}}" data-title="{{item.title}}" data-type="{{item.type}}">MM</span>
+      <span bindtap="delPart" data-skill="{{skill}}" data-title="{{item.title}}">--</span>
     </view>
   </view>
   <view class="add-input" wx:if="{{showInput}}">
-    <input placeholder="又编写了一个问题..." bindinput="partTitle" />
+    <input placeholder="又编写了一个问题..." bindinput="partTitle" value="{{title}}" />
   </view>
-  <view class="add" wx:if="{{!showInput}}" bindtap="addPart">
+  <view class="add-type" wx:if="{{showInput}}">
+    <block>
+      <view wx:for="{{type}}" class="add-type-item {{choosedType[item] ? 'choosed-type':''}}" bindtap="chooseType" data-type="{{item}}" wx:for-index="index" wx:key="{{index}}">
+        {{choosedType[item]}}
+      </view>
+    </block>
   </view>
-  <view class="add-bottom" wx:if="{{showInput}}" bindtap="addPart">
-    <view class="cancel" bindtap="showInput=false">
+  <view class="add" wx:if="{{!showInput && choosed === 'part'}}" bindtap="addPart">
+  </view>
+  <view class="add-bottom" wx:if="{{showInput}}">
+    <view class="cancel" bindtap="cancelInput">
       取消
     </view>
+    <view class="confirm" bindtap="modPartTitle">
+      修改
+    </view>
     <view class="confirm" bindtap="makePart">
-      确定
+      新增
     </view>
   </view>
   <view class="detail">

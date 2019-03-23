@@ -12,6 +12,8 @@ Page({
     BasicStore: null,
     showInput: false,
     title: '',
+    type: [],
+    choosedType: {},
   },
 
   onLoad: function() {
@@ -37,12 +39,13 @@ Page({
   },
   onHide() {
     console.log('hide')
-    const { discipline, profession, skill, part } = this.data
+    const { discipline, profession, skill, part, type } = this.data
     store.set('basicStore', {
       discipline,
       profession,
       skill,
       part,
+      type
     })
   },
   init() {
@@ -68,15 +71,15 @@ Page({
       profession
     })
     .end().then( ( { body: data } ) => {
-      console.log(data)
+      console.log(data.data)
       this.setData({
         profession,
         skill: data.data,
-        choosed: 'skill'
+        choosed: 'skill',
       })
     })
   },
-  getPart ({target:{dataset:{skill}}}) {
+  getPart ({target:{dataset:{skill, type}}}) {
     app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
       skill
     })
@@ -85,7 +88,8 @@ Page({
       this.setData({
         skill,
         part: data.data,
-        choosed: 'part'
+        choosed: 'part',
+        type,
       })
     })
   },
@@ -112,6 +116,19 @@ Page({
     console.log('addpart')
     this.setData({
       showInput: true
+    })
+  },
+  chooseType({target:{dataset:{ type }}}) {
+    const choosedType = this.data.choosedType
+    choosedType[type] = choosedType[type] ? null : type
+    this.setData({
+      choosedType,
+    })
+  },
+  cancelInput() {
+    console.log(this.data.showInput)
+    this.setData({
+      showInput: false
     })
   },
   partTitle ({ detail: { value } }) {
@@ -150,11 +167,28 @@ Page({
   },
   makePart () {
     console.log('makepart')
-    const { title, profession, skill, discipline } = this.data
+    const { title, profession, skill, discipline, choosedType } = this.data
+    console.log(Object.keys(choosedType))
     app.request().post(`${urlPre}/api/code/basic/part/createTitle`).send({
       title,
       profession,
       discipline,
+      skill,
+      type: choosedType,
+    })
+    .end().then( ( { body: data } ) => {
+      console.log(data)
+      this.setData({
+        skill,
+        part: data.data,
+        choosed: 'part',
+        choosedType: {}
+      })
+    })
+  },
+  delPart( { target: { dataset: { skill, title } } } ) {
+    app.request().post(`${urlPre}/api/code/basic/part/deletePart`).send({
+      title,
       skill,
     })
     .end().then( ( { body: data } ) => {
@@ -162,8 +196,48 @@ Page({
       this.setData({
         skill,
         part: data.data,
-        choosed: 'part'
+        choosed: 'part',
+        choosedType: {}
       })
     })
   },
+  modPart( { target: { dataset: { skill, title, type } } } ) {
+    this.setData({
+      showInput: true,
+      title,
+      originTitle: title,
+      choosedType: type
+    })
+    // app.request().post(`${urlPre}/api/code/basic/part/modPartInfo`).send({
+    //   title,
+    //   skill,
+    // })
+    // .end().then( ( { body: data } ) => {
+    //   console.log(data)
+    //   this.setData({
+    //     skill,
+    //     part: data.data,
+    //     choosed: 'part',
+    //     choosedType: {}
+    //   })
+    // })
+  },
+  modPartTitle() {
+    const { title, skill, originTitle } = this.data
+    app.request().post(`${urlPre}/api/code/basic/part/modPartInfo`).send({
+      title,
+      skill,
+      originTitle
+    })
+    .end().then( ( { body: data } ) => {
+      console.log(data)
+      this.setData({
+        skill,
+        part: data.data,
+        choosed: 'part',
+        choosedType: {},
+        originTitle: title,
+      })
+    })
+  }
 })
