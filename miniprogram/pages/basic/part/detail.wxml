@@ -89,7 +89,7 @@
                       {{yy.name}}
                     </span>
                   </span>
-                  <span class="name-item style-item" wx:for="{{m1.getStyle(ii.attrs.style)}}" wx:for-index="zzndex" wx:for-item="zz" wx:key="zzndex">
+                  <span class="name-item style-item" wx:for="{{m1.getStyle(ii.attrs.style)}}" wx:if="{{m1.getStyle(ii.attrs.style).length>0}}" wx:for-index="zzndex" wx:for-item="zz" wx:key="zzndex">
                     <span bindtap="chooseStyle" data-val="{{m1.getVal(zz)}}" data-name="{{m1.getKey(zz)}}" class="{{m1.getKey(zz)===ii.styleKey?'choosed-tag':''}}" data-index="{{index + '-' + iindex}}">
                       {{styleMap[m1.getKey(zz)].sName}}
                     </span>
@@ -100,7 +100,7 @@
               <!-- img节点src属性 -->
               <view wx:if="{{ii.attrs.src!==undefined}}">
                 src:<input placeholder="....." bindinput="inputText" class="img-input" focus="true" data-index="{{index + '-' + iindex}}" bindconfirm="huiche" />
-                <view bindtap="addNode" data-type="add" wx:if="{{ii.attrs.src!==undefined}}" class="sec-item-add" data-index="{{index + '-' +i.children.length}}">
+                <view bindtap="addNode" data-type="add" class="sec-item-add {{ iindex!==0?'sec-item-add-small':'' }}" data-index="{{index + '-' +i.children.length}}">
                   + 
                 </view>
               </view>
@@ -110,7 +110,11 @@
               </view> -->
               <!-- text节点input属性 -->
               <view wx:if="{{ii.type!==undefined}}">
-                <input value="{{ii.text}}" placeholder="..." bindinput="inputText" focus="true" data-index="{{(index)+'-'+(iindex)}}" bindconfirm="huiche"/>
+                <view bindtap="addNode" data-type="add" class="sec-item-textarea {{ iindex!==0?'sec-item-add-small':'' }}" data-index="{{index + '-' + (iindex+1)}}">
+                  + 
+                </view>
+                <textarea wx:if="{{i.name!=='code'}}" auto-height="true" value="{{ii.text}}" placeholder="..." class="div-area" bindinput="inputText" focus="true" data-index="{{(index)+'-'+(iindex)}}" bindconfirm="huiche"/>
+                <input wx:else auto-height="true" value="{{ii.text}}" placeholder="..." class="div-input" bindinput="inputText" focus="true" data-index="{{(index)+'-'+(iindex)}}" bindconfirm="huiche"/>
               </view>
               <!-- node节点拓展属性 -->
               <view wx:if="{{ii.children!==undefined}}">

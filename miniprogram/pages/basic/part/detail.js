@@ -114,10 +114,6 @@ const funcMap = {
   text: {
     type: 'text',
     text: '',
-    attrs: {
-      class: '',
-      style: 'font-size: 20px;line-height: 20px;color:black;font-weight:500'
-    },
     styleInput: '',
     styleKey:'',
   },
@@ -163,10 +159,6 @@ const funcMap = {
     children: [{
       type: 'text',
       text: '',
-      attrs: {
-        class: '',
-        style: 'font-size: 20px;line-height: 20px;color:black'
-      },
       styleInput: '',
       styleKey:'',
     }]
@@ -184,10 +176,6 @@ const funcMap = {
     children: [{
       type: 'text',
       text: '',
-      attrs: {
-        class: '',
-        style: 'font-size: 20px;line-height: 20px;color:black'
-      },
       styleInput: '',
       styleKey:'',
     }]
@@ -335,6 +323,7 @@ Page({
           let typeObj = this.data.funcMap[type || name]
           let delObj = JSON.parse(JSON.stringify(typeObj))
           detail[indexArr[0]] = Object.assign({}, delObj)
+          // detail.splice(+indexArr[0] + 1, 0 , Object.assign({}, delObj))
         } else {
           detail[indexArr[0]] = {
             type: 'text',
@@ -354,17 +343,18 @@ Page({
           // let delObj = JSON.parse(JSON.stringify(detail[indexArr[0]].children[indexArr[1] - 1]))
           // delete delObj.children
           // 如果是二级text文本节点 根据第一级计算样式
-          if (type) {
+          if (type && detail[indexArr[0]].name !== 'div') {
             let { name, attrs } = detail[indexArr[0]]
             delObj = JSON.parse(JSON.stringify(this.data.funcMap[name]))
-            delObj.attrs = attrs
-            detail[+indexArr[0] + 1] = Object.assign({}, delObj)
+            delObj.attrs = JSON.parse(JSON.stringify(attrs))
+            // detail[+indexArr[0] + 1] = Object.assign({}, delObj)
+            detail.splice(+indexArr[0] + 1, 0 , Object.assign({}, delObj))
             // 针对code标签做缩进处理
+            console.log(detail)
             let codes = detail
             if (name === 'code') {
               let tier = 0
               for (let i = 0; i < codes.length-1; i++ ) {
-
                 if (codes[i].name && codes[i].name === 'code') {
                   let str = codes[i].children[0].text.split('')
                   let right = str.filter(x => x === '{').length
@@ -375,7 +365,7 @@ Page({
                       tier++
                       console.log(tier)
                       let result = `padding-left:${30 + tier * 20 }px;`
-                      console.log(codes[i].attrs.style)
+                      // console.log(codes[i].attrs.style)
                       let newVal = codes[i + 1].attrs.style.replace(/padding-left.*?(;|$)/, result)
                       console.log(newVal)
                       codes[i + 1].attrs.style = newVal
@@ -383,7 +373,7 @@ Page({
                       tier--
                       console.log(tier)
                       let result = `padding-left:${30 + tier * 20 }px;`
-                      console.log(codes[i].attrs.style)
+                      // console.log(codes[i].attrs.style)
                       let newVal = codes[i].attrs.style.replace(/padding-left.*?(;|$)/, result)
                       console.log(newVal)
                       codes[i].attrs.style = newVal
@@ -399,17 +389,18 @@ Page({
               }
             }
           } else {
-            typeObj = this.data.funcMap[name]
+            typeObj = this.data.funcMap[name || type]
             console.log(typeObj)
             delObj = JSON.parse(JSON.stringify(typeObj))
-            detail[indexArr[0]].children[indexArr[1]] = Object.assign({}, delObj)
+            detail[indexArr[0]].children.splice(indexArr[1], 0, Object.assign({}, delObj))
           }
         } else {
-          detail[indexArr[0]].children[indexArr[1]] = {
+          detail[indexArr[0]].children.splice(indexArr[1], 0, Object.assign({}, {
             type: 'text',
             text: ''
-          }
+          }))
         }
+        console.log(detail)
       } else{
         console.log(detail[indexArr[0]].children[indexArr[1]])
         detail[indexArr[0]].children.splice(indexArr[1], 1)

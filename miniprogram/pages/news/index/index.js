@@ -54,12 +54,15 @@ Page({
               app.request().post(`${urlPre}/api/code/login`).send({
                 code: res.code
               })
-              .end().then( ( { body: data } ) => {
-                console.log(data)
-                self.setData({
-                  banners: data.data
-                })
-              })                      } else {
+              .end().then( ( { body: { data: { token }} } ) => {
+                // console.log(data)
+                let originUserInfo = app.userInfo
+                !originUserInfo.loginInfo && ( originUserInfo.loginInfo = {} )
+                originUserInfo.loginInfo.token = token
+                app.userInfo = originUserInfo
+                console.log(app.userInfo)
+              })
+            } else {
               console.log('登录失败！' + res.errMsg)
             }
           }
@@ -182,6 +185,12 @@ Page({
   preventShut () {
     console.log('防止冒泡')
     // this.setData()
+  },
+  getPhoneNumber(e) {
+    console.log('获取到的手机号')
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
   },
   onGetUserInfo: function(e) {
     if (!this.logged && e.detail.userInfo) {

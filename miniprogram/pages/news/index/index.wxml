@@ -40,5 +40,7 @@
             </view>
         </view>
     </view>
-
+    <!-- <view>获取手机号：
+        <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
+    </view> -->
 </view>
