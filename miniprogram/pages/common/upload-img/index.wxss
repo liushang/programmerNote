@@ -1,0 +1,4 @@
+.extend{
+    border: 1rpx solid red;
+    overflow: hidden;
+}

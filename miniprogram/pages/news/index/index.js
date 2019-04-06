@@ -47,26 +47,26 @@ Page({
             }
           })
         }
-        wx.login({
-          success(res) {
-            if (res.code) {
-              // 发起网络请求
-              app.request().post(`${urlPre}/api/code/login`).send({
-                code: res.code
-              })
-              .end().then( ( { body: { data: { token }} } ) => {
-                // console.log(data)
-                let originUserInfo = app.userInfo
-                !originUserInfo.loginInfo && ( originUserInfo.loginInfo = {} )
-                originUserInfo.loginInfo.token = token
-                app.userInfo = originUserInfo
-                console.log(app.userInfo)
-              })
-            } else {
-              console.log('登录失败！' + res.errMsg)
-            }
-          }
-        })
+        // wx.login({
+        //   success(res) {
+        //     if (res.code) {
+        //       // 发起网络请求
+        //       app.request().post(`${urlPre}/api/code/login`).send({
+        //         code: res.code
+        //       })
+        //       .end().then( ( { body: { data: { token }} } ) => {
+        //         // console.log(data)
+        //         let originUserInfo = app.userInfo
+        //         !originUserInfo.loginInfo && ( originUserInfo.loginInfo = {} )
+        //         originUserInfo.loginInfo.token = token
+        //         app.userInfo = originUserInfo
+        //         console.log(app.userInfo)
+        //       })
+        //     } else {
+        //       console.log('登录失败！' + res.errMsg)
+        //     }
+        //   }
+        // })
       },
       fail(e){
         console.log('eeeee')

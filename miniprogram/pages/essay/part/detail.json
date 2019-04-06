@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+        "ladder-bar": "../../common/ladder-bar/index",
+        "upload-img": "../../common/upload-img/index"
+    }
+}

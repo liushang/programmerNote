@@ -1,5 +1,6 @@
 <import src="../../../wxParse/wxParse.wxml"/>  
 <view class="part">
+  <!-- <ladder-bar discipline="{{discipline}}" profession="{{profession}}" skill="{{skill}}" part="{{part}}"></ladder-bar> -->
   <view class="detail-title" bindtap="edit" wx:if="{{!showEditModal}}">
     编辑
   </view>

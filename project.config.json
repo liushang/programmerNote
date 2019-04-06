@@ -56,7 +56,7 @@
 					"id": 3,
 					"name": "basicpart",
 					"pathName": "pages/basic/part/detail",
-					"query": "title=blur和click冲突&skill=js",
+					"query": "title=ceshi&skill=js",
 					"scene": null
 				}
 			]

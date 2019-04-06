@@ -1,0 +1,23 @@
+<view class="extend {{ showCatalogue ? 'catalogue-show' : '' }}" wx:if="{{catalogue && catalogue.length}}">
+  <view wx:for="{{catalogue}}" class="level-1" wx:for-index="index" wx:for-item="i" wx:key="{{index}}">
+    <view class="module-item">
+        <view class="" catchtap="setLevel" data-one="{{index}}" class="{{currentIndex === index ? 'level-1-choose':''}}">~ {{i.name}}<span>+</span></view>
+        <view wx:for="{{i.children}}" class="level-2 level-2-left" wx:for-index="iindex" wx:for-item="ii" wx:key="{{b}}">
+          <view class="{{currentIindex === iindex && currentIndex === index ? 'level-2-choose':''}}" catchtap="setLevel" data-one="{{index}}" data-two="{{iindex}}" wx:if="{{ii.name}}">~ {{ii.name}}<span>+</span></view>
+          <view wx:for="{{ii.children}}" wx:if="{{ii.children.length}}" class="level-3" wx:for-index="iiindex" wx:for-item="iii" wx:key="{{c}}">
+            <view class="{{currentIiindex === iiindex && currentIindex === iindex && currentIndex === index ? 'level-3-choose':''}}" catchtap="setLevel" data-one="{{index}}" data-two="{{iindex}}" data-three="{{iiindex}}" wx:if="{{iii.name}}">~ {{iii.name}}<span>+</span></view>
+          </view>
+        </view>
+      </view>
+  </view>
+  <input  class="level-input" value="{{inputOne}}" bindinput="addCatalogueOne"/>
+  <input  class="level-input" value="{{inputTwo}}" bindinput="addCatalogueTwo"/>
+  <input  class="level-input" value="{{inputThree}}" bindinput="addCatalogueThree"/>
+  <view class="side-back" bindtap="showOrDown">
+    收回
+  </view>
+  <view class="side-confirm" bindtap="confirm">
+    确定
+  </view>
+
+</view>

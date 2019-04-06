@@ -4,7 +4,8 @@
     "pages/basic/index/index",
     "pages/basic/part/detail",
     "pages/write/index",
-    "pages/source/index",
+    "pages/essay/index/index",
+    "pages/essay/part/detail",
     "pages/user/index",
     "pages/wxml/index",
     "pages/userConsole/userConsole",
@@ -34,8 +35,8 @@
         "selectedIconPath": ""
       },
       {
-        "text": "basic",
-        "pagePath": "pages/basic/index/index",
+        "text": "essay",
+        "pagePath": "pages/essay/index/index",
         "iconPath": "",
         "selectedIconPath": ""
       },
@@ -46,8 +47,8 @@
         "selectedIconPath": ""
       },
       {
-        "text": "source",
-        "pagePath": "pages/source/index",
+        "text": "basic",
+        "pagePath": "pages/basic/index/index",
         "iconPath": "",
         "selectedIconPath": ""
       },

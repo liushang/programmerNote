@@ -1,0 +1,5 @@
+  <view class="extend">
+    <view class="choose-item choose-discipline" bindtap="upLoadImage" data-type="">
+      upload
+    </view>
+  </view>

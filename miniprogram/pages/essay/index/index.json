@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "ladder-bar": "../../common/ladder-bar/index"
+  }
+}

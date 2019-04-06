@@ -132,7 +132,7 @@ const funcMap = {
     expandd: true,
     attrs: {
       class: 'rich-text-div',
-      style: 'font-size: 14px;line-height: 20px;color:black;text-align: left'
+      style: 'font-size: 10px;line-height: 20px;color:black;text-align: left'
     },
     styleInput: '',
     styleKey:'',
@@ -488,7 +488,7 @@ Page({
     })
   },
   confimEdit() {
-    const { detail: content, part: title, skill } = this.data
+    const { detail: content, title, skill } = this.data
     console.log(content)
     app.request().post(`${urlPre}/api/code/basic/part/savePartDetailByTitle`).send({
       title, skill, content

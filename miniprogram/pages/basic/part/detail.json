@@ -1,5 +1,7 @@
 {
     "usingComponents": {
-        "ladder-bar": "../../common/ladder-bar/index"
+        "ladder-bar": "../../common/ladder-bar/index",
+        "upload-img": "../../common/upload-img/index",
+        "catalogue": "../../common/catalogue/index"
     }
 }

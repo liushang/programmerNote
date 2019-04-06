@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "ladder-bar": "../../common/ladder-bar/index"
+    "ladder-bar": "../../common/ladder-bar/index",
+    "catalogue": "../../common/catalogue/index"
   }
 }

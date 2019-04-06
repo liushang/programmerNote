@@ -1,6 +1,6 @@
   <view class="extend">
     <view class="choose-item choose-discipline" bindtap="back" data-type="">
-      all
+      全部
     </view>
     <view class="choose-item choose-discipline" wx:if="{{disciplineName}}" bindtap="back" data-type="discipline">
       {{disciplineName}}

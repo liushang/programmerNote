@@ -14,7 +14,6 @@ Page({
     title: '',
     type: [],
     choosedType: {},
-    catalogue: {},
   },
 
   onLoad: function() {
@@ -31,7 +30,6 @@ Page({
         discipline,
         profession: data.data,
         choosed: 'profession',
-        catalogue: null,
       })
     })
   },
@@ -42,7 +40,7 @@ Page({
   onHide() {
     console.log('hide')
     const { discipline, profession, skill, part, type } = this.data
-    store.set('basicStore', {
+    store.set('essayStore', {
       discipline,
       profession,
       skill,
@@ -51,7 +49,7 @@ Page({
     })
   },
   init() {
-    const { discipline, profession, skill, part } = store.get('basicStore')
+    const { discipline, profession, skill, part } = store.get('essayStore')
     if (!this.data.profession && profession) {
       let choosed = 'profession'
       if (profession) choosed = 'profession'
@@ -78,11 +76,10 @@ Page({
         profession,
         skill: data.data,
         choosed: 'skill',
-        catalogue: null,
       })
     })
   },
-  getPart ({ target: { dataset: { skill, type, catalogue } } }) {
+  getPart ({target:{dataset:{skill, type}}}) {
     app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
       skill
     })
@@ -93,7 +90,6 @@ Page({
         part: data.data,
         choosed: 'part',
         type,
-        catalogue: catalogue,
       })
     })
   },
@@ -104,8 +100,7 @@ Page({
       console.log(data)
       this.setData({
         discipline: data.data,
-        choosed: 'discipline',
-        catalogue: null,
+        choosed: 'discipline'
       })
     })
   },
@@ -242,30 +237,6 @@ Page({
         choosed: 'part',
         choosedType: {},
         originTitle: title,
-      })
-    })
-  },
-  switchCatalogue({ detail: { index } }) {
-    app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
-      skill: this.data.skill,
-      index,
-    })
-    .end().then( ( { body: data } ) => {
-      console.log(data)
-      this.setData({
-        part: data.data,
-      })
-    })
-  },
-  updateCatalogue({ detail: { skill } }) {
-    app.request().get(`${urlPre}/api/code/basic/getSkillsByProfession`).query({
-      profession: this.data.profession
-    })
-    .end().then( ( { body: data } ) => {
-      console.log(data.data)
-      let choosedSkill = data.data.filter(x => x.sName === skill)[0]
-      this.setData({
-        catalogue: choosedSkill.catalogue,
       })
     })
   }

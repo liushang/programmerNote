@@ -9,9 +9,16 @@ page {
     /* position: relative; */
     background: white;
   }
-  
+.ladder-bar{
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
 .content{
   padding: 10rpx 20rpx;
+  margin-top: 72rpx;
 }
 .module{
   display: inline-block;
