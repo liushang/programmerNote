@@ -83,19 +83,28 @@ Page({
     })
   },
   getPart ({ target: { dataset: { skill, type, catalogue } } }) {
-    app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
-      skill
+    store.set('basicCatalogue', {
+      catalogue
     })
-    .end().then( ( { body: data } ) => {
-      console.log(data)
-      this.setData({
-        skill,
-        part: data.data,
-        choosed: 'part',
-        type,
-        catalogue: catalogue,
-      })
-    })
+    wx.navigateTo({
+      url: `/pages/basic/part/detail?refer=basicIndex&skill=${skill}&profession=${this.data.profession}`,
+      complete() {
+        console.log('跳转成功')
+      },
+    });
+    // app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
+    //   skill
+    // })
+    // .end().then( ( { body: data } ) => {
+    //   console.log(data)
+    //   this.setData({
+    //     skill,
+    //     part: data.data,
+    //     choosed: 'part',
+    //     type,
+    //     catalogue: catalogue,
+    //   })
+    // })
   },
   getDiscipline () {
     console.log('getdiscipline')
@@ -156,9 +165,17 @@ Page({
         skill: null
       })
     } else if (type === 'skill') {
-      this.getPart({target:{dataset:{skill: this.data.skill}}})
+      console.log('跳转到详情页')
+      // this.getPart({target:{dataset:{skill: this.data.skill}}})
       this.setData({
         part: null
+      })
+      // 直接跳转到详情页面
+      wx.navigateTo({
+        url: `/pages/basic/part/detail`,
+        complete() {
+          console.log('跳转成功')
+        },
       })
     } else {
       this.getDiscipline()
@@ -245,28 +262,4 @@ Page({
       })
     })
   },
-  switchCatalogue({ detail: { index } }) {
-    app.request().get(`${urlPre}/api/code/basic/getPartsBySkill`).query({
-      skill: this.data.skill,
-      index,
-    })
-    .end().then( ( { body: data } ) => {
-      console.log(data)
-      this.setData({
-        part: data.data,
-      })
-    })
-  },
-  updateCatalogue({ detail: { skill } }) {
-    app.request().get(`${urlPre}/api/code/basic/getSkillsByProfession`).query({
-      profession: this.data.profession
-    })
-    .end().then( ( { body: data } ) => {
-      console.log(data.data)
-      let choosedSkill = data.data.filter(x => x.sName === skill)[0]
-      this.setData({
-        catalogue: choosedSkill.catalogue,
-      })
-    })
-  }
 })

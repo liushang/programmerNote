@@ -218,9 +218,20 @@ Page({
     styleMap,
     chooseFirst: 0,
     chooseSec: 0,
+    showCatalogue: false,
   },
-  onLoad({ title, skill }) {
-    this.getPartDetail({ title, skill })
+  onLoad({ title, skill, refer, profession }) {
+    if (refer) {
+      const { catalogue } = store.get('basicCatalogue')
+      this.setData({
+        catalogue,
+        skill,
+        showCatalogue: true,
+        profession
+      })
+    } else {
+      this.getPartDetail({ title, skill })
+    }
   },
   onShow() {
     console.log('show')
@@ -228,23 +239,49 @@ Page({
   onHide() {
     console.log('hide')
   },
+  switchCatalogue({ detail: { catalogueOne, catalogueTwo, catalogueThree } }) {
+    this.getPartDetail({ title: catalogueThree || catalogueTwo || catalogueOne, skill: this.data.skill })
+  },
+  updateCatalogue({ detail: { skill } }) {
+    app.request().get(`${urlPre}/api/code/basic/getSkillsByProfession`).query({
+      profession: this.data.profession
+    })
+    .end().then( ( { body: data } ) => {
+      console.log(data.data)
+      let choosedSkill = data.data.filter(x => x.sName === skill)[0]
+      this.setData({
+        catalogue: choosedSkill.catalogue,
+      })
+      store.set('basicCatalogue', {
+        catalogue: choosedSkill.catalogue
+      })
+    })
+  },
+  showOrDown() {
+    const { showCatalogue } = this.data
+    this.setData({
+      showCatalogue: !showCatalogue,
+    })
+  },
   getPartDetail ({ title, skill }) {
     app.request().post(`${urlPre}/api/code/basic/part/getPartDetailByTitle`).send({
       title, skill
     })
     .end().then( ( { body: { data: data } } ) => {
       console.log(data)
-      const { discipline, profession, skill, title: part, content } = data[0]
-      // WxParse.wxParse('makeDown', 'md', content, this, 20)
-      this.setData({
-        profession,
-        discipline,
-        skill,
-        part,
-        detail: content && JSON.parse(content) || [funcMap['div']],
-        partDetail: data[0],
-        choosed: 'part'
-      })
+      if (data[0]) {
+        const { discipline, profession, skill, title: part, content } = data[0]
+        // WxParse.wxParse('makeDown', 'md', content, this, 20)
+        this.setData({
+          profession,
+          discipline,
+          skill,
+          part,
+          detail: content && JSON.parse(content) || [funcMap['div']],
+          partDetail: data[0],
+          choosed: 'part'
+        })
+      }
     })
   },
   edit() {

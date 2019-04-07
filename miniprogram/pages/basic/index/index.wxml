@@ -1,7 +1,6 @@
 <!--index.wxml-->
 <view>
   <ladder-bar bind:back="back" discipline="{{discipline}}" profession="{{profession}}" class="ladder-bar" skill="{{skill}}" part="{{part}}"></ladder-bar>
-  <catalogue wx:if="{{part && part.length > 1}}" catalogue="{{catalogue}}" skill="{{skill}}" bind:switchCatalogue="switchCatalogue" bind:updateCatalogue="updateCatalogue" wx:if="{{catalogue && catalogue.length}}"></catalogue>
   <view class="content">
     <view wx:for="{{discipline}}" class="module" wx:if="{{choosed==='discipline'}}"  wx:for-index="index" wx:key="{{index}}">
       <view class="module-item" bindtap="getProfession" data-discipline="{{item.sName}}">{{item.name}}</view>

@@ -1,16 +1,16 @@
 .extend{
     border: 1rpx solid red;
-    height: 90%;
-    margin-top: -72rpx;
-    padding-top: 144rpx;
-    position: fixed;
-    top: 0;
-    left: -80%;
-    width: 100%;
-    width: 60%;
+    height: 100%;
+    position: relative;
+    /* top: 0;
+    left: -95%; */
+    width: 94%;
     z-index: 2;
-    padding-left: 40%;
+    /* padding-left: 40%; */
     background: #f5f5f5;
+    box-sizing: border-box;
+}
+.catalogue{
     overflow-y: scroll;
 }
 .level-1{
@@ -40,27 +40,25 @@
 .level-3-choose{
     background: yellow;
 }
-.side-back{
-    height: 100rpx;
-    width: 100rpx;
-    top: 50%;
-    right: 0%;
-    transform: translate(50%, 0);
-    position: absolute;
-}
 .level-input {
     border: 1rpx solid black;
     margin-top: 0;
     padding: 0;
     width: 60%;
 }
-.catalogue-show {
-    left: -40%;
-}
+
 .side-confirm{
     height: 60rpx;
-    width: 100rpx;
+    width: 40rpx;
     top: 90%;
     right: 2%;
+    z-index: 3;
     position: absolute;
+}
+.inputs{
+    height: 200rpx;
+    position: absolute;
+    bottom: 0;
+    /* left: 40%; */
+    width: 100%;
 }

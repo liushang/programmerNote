@@ -13,6 +13,9 @@ Component({
       attached() {
         console.log('目录数据')
         console.log(this.data.catalogue)
+        this.setData({
+          originCatalogue: JSON.parse(JSON.stringify(this.data.catalogue))
+        })
       },
     },
     data: {
@@ -29,14 +32,8 @@ Component({
       //   // const levelArr = index.split('-')
       //   this.triggerEvent('switchCatalogue', { index })
       // },
-      showOrDown() {
-        const { showCatalogue } = this.data
-        this.setData({
-          showCatalogue: !showCatalogue,
-        })
-      },
       confirm() {
-        const { skill, catalogue } = this.data
+        const { skill, catalogue, originCatalogue } = this.data
 
         app.request().post(`${urlPre}/api/code/basic/changeCatalogue`).query({
           skill
@@ -128,11 +125,11 @@ Component({
           inputTwo,
           inputThree,
         })
-        let aa = ''
-        if (one) aa += one
-        if (two) aa += `-${two}`
-        if (three) aa =+ `-${three}`
-        this.triggerEvent('switchCatalogue', { index: aa })
+        // let aa = ''
+        // if (one) aa += one
+        // if (two) aa += `-${two}`
+        // if (three) aa =+ `-${three}`
+        this.triggerEvent('switchCatalogue', { catalogueOne: inputOne, catalogueTwo: inputTwo, catalogueThree: inputThree })
       },
       addCatalogueOne({ detail: { value } }) {
         let { currentIndex, catalogue = [] } = this.data
@@ -143,6 +140,7 @@ Component({
           catalogue[currentIndex] = {
             name: value,
             level: 1,
+            time: new Date().getTime(),
             children: []
           }
         }
@@ -161,6 +159,7 @@ Component({
             catalogue[currentIndex].children[currentIindex] = {
               name: value,
               level: 1,
+              time: new Date().getTime(),
               children: []
             }
           } else {
@@ -169,9 +168,11 @@ Component({
             catalogue[currentIndex] = {
               name: '',
               level: 1,
+              time: new Date().getTime(),
               children: [ {
                 name: value,
                 level: 2,
+                time: new Date().getTime(),
                 children: []
               } ]
             }
@@ -193,6 +194,7 @@ Component({
             catalogue[currentIndex].children[currentIindex].children[currentIiindex] = {
               name: value,
               level: 3,
+              time: new Date().getTime(),
               children: []
             }
           } else {
@@ -202,9 +204,11 @@ Component({
               catalogue[currentIndex].children[currentIindex] = {
                 name: '',
                 level: 2,
+                time: new Date().getTime(),
                 children: [ {
                   name: value,
                   level: 3,
+                  time: new Date().getTime(),
                   children: []
                 } ]
               }
@@ -215,12 +219,15 @@ Component({
               catalogue[currentIndex] = {
                 name: '',
                 level: 1,
+                time: new Date().getTime(),
                 children: [ {
                   name: '',
                   level: 2,
+                  time: new Date().getTime(),
                   children: [ {
                     name: value,
                     level: 3,
+                    time: new Date().getTime(),
                     children: []
                   } ]
                 } ]
@@ -234,6 +241,30 @@ Component({
           currentIindex,
           currentIiindex
         })
+      },
+      inputBlur({ target: { dataset: { level } }, detail: { value } }) {
+        console.log(value)
+        if (!value) return 
+        const { originCatalogue, currentIndex, currentIindex, currentIiindex, catalogue } = this.data
+        if (+level === 1) {
+          if (!originCatalogue[ currentIndex ]) {
+            console.log('新增1')
+          } else if (originCatalogue[ currentIndex ].name !== catalogue[ currentIndex ].name) {
+            console.log('name1change')
+          }
+        } else if (+level === 2 && currentIindex !== null) {
+          if (!originCatalogue[ currentIndex ] || !originCatalogue[ currentIndex ].children[currentIindex]) {
+            console.log('新增2')
+          } else if (originCatalogue[ currentIndex ].children[currentIindex].name !== catalogue[ currentIndex ].children[currentIindex].name) {
+            console.log('name2change')
+          }
+        } else if (currentIiindex !== null) {
+          if (!originCatalogue[ currentIndex ] || !originCatalogue[ currentIndex ].children[currentIindex] || !originCatalogue[ currentIndex ].children[currentIindex].children[currentIiindex]) {
+            console.log('新增3')
+          } else if (originCatalogue[ currentIndex ].children[currentIindex].children[currentIiindex].name !== catalogue[ currentIndex ].children[currentIindex].children[currentIiindex].name) {
+            console.log('name3change')
+          }
+        }
       },
     },
   })

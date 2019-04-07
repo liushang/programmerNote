@@ -1,4 +1,10 @@
-<import src="../../../wxParse/wxParse.wxml"/>  
+<import src="../../../wxParse/wxParse.wxml"/>
+<view class="catalogue {{ showCatalogue ? 'catalogue-show' : '' }}">
+  <catalogue wx:if="{{showCatalogue}}" catalogue="{{catalogue}}" skill="{{skill}}" bind:switchCatalogue="switchCatalogue" bind:updateCatalogue="updateCatalogue"></catalogue>
+  <view class="side-back" bindtap="showOrDown">
+    收回
+  </view>
+</view>
 <view class="part">
   <view class="detail-title" bindtap="edit" wx:if="{{!showEditModal}}">
     编辑
